@@ -9,12 +9,12 @@ export class APIProvider extends Component {
     super(props)
 
     this.state = {
-      api : new API()
+      ...new API()
     }
   }
   
   addModel = (name,model) => {
-    const models = new Map(this.state.api.models)
+    const models = new Map(this.state.models)
     if (name in models) {
       return {
         code: -1,
@@ -23,10 +23,7 @@ export class APIProvider extends Component {
     } else {
       models[name] = model
     }
-    const api = new API()
-    api.models = models
-    api.dbConnection = this.state.api.dbConnection
-    this.setState({api})
+    this.setState({models})
   }  
 
   removeModel = (name) => {
@@ -34,10 +31,7 @@ export class APIProvider extends Component {
     if (name in models) {
       models = new Map(models)
       models.delete(name)
-      const api = new API()
-      api.models = models
-      api.dbConnection = this.state.api.dbConnection
-      this.setState({api})
+      this.setState({models})
     } 
   }
 
@@ -45,21 +39,17 @@ export class APIProvider extends Component {
     const models = new Map(this.state.models)
     if (name in models) {
       models[name] = model
-      const api = new API()
-      api.models = models
-      api.dbConnection = this.state.api.dbConnection
-      this.setState({api})
+      this.setState({models})
     }
   }
 
   removeAllModels = () => {
     const models = new Map()
-    const api = new API()
-    api.models = models
-    api.dbConnection = this.state.api.dbConnection
-    this.setState({api})
+    this.setState({models})
   }
   
+
+
   render() {
     const { props } = this
     const apiState = this.state
