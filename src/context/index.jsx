@@ -48,14 +48,24 @@ export class APIProvider extends Component {
     this.setState({models})
   }
   
-
+  changeName = (e) => {
+    this.setState({name:e.target.value})
+  }
 
   render() {
     const { props } = this
     const apiState = this.state
-    const { addModel, removeModel, editModel, removeAllModels } = this
+    const { addModel, removeModel, editModel, removeAllModels, changeName } = this
+    const contextPassValue = {
+      apiState,
+      addModel,
+      removeModel,
+      removeAllModels,
+      editModel,
+      changeName
+    }
     return (
-      <APIContext.Provider value={apiState,addModel,removeModel,removeAllModels,editModel}>
+      <APIContext.Provider value={contextPassValue}>
         {props.children}
       </APIContext.Provider>
     );
