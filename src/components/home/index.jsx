@@ -9,18 +9,14 @@ class index extends Component {
   render() {
     const {apiState,changeName} = this.context
     return (
-      <div className="container" style={{
-        marginTop:'5%'
-      }}>
-        <Card>
+        <>
           <TextInput value={apiState.name} onChange={ changeName} label="Project Name"/>
           <Link to='/models'>
             <Button>
               Add a Model
             </Button>
           </Link>
-        </Card>
-      </div>
+        </>
     );
   }
 }

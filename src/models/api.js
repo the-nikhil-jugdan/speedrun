@@ -1,7 +1,7 @@
 class API {
   constructor() {
     this.name = ''
-    this.models = {}
+    this.models = new Map()
     this.dbConnection = null
   }
 }
