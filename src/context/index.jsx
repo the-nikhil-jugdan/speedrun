@@ -14,17 +14,20 @@ export class APIProvider extends Component {
   }
   
   addModel = (name,model) => {
-    const models = new Map(this.state.models)
-    if (name in models) {
+    const models = new Map()
+    this.state.models.forEach((value, key) => {
+      models.set(key,value)
+    })
+    if (this.state.models.has(name)) {
       return {
         code: -1,
         error: 'Model already exists'
       }
     } else {
-      models[name] = model
+      models.set(name,model)
     }
     this.setState({models})
-  }  
+  }
 
   removeModel = (name) => {
     let models = this.state.models

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Card,Select,Row,TextInput,Checkbox} from 'react-materialize'
+import {Card,Select,TextInput,Checkbox} from 'react-materialize'
 import {sequelize_db_types} from './util'
 
 
@@ -27,7 +27,8 @@ class index extends Component {
   }
 
   render() {
-    const { type , fieldName, modifyFormElement, defaultValue,allowNull } = this.state
+    const { type, fieldName, defaultValue, allowNull } = this.state
+    const {modifyFormElement} = this
     return (
       <Card>
         <div

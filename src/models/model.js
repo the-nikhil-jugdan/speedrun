@@ -1,7 +1,8 @@
 class Model{
   constructor() {
-    this.fields = {}
+    this.fields = new Map()
     this.tableName = ''
+    this.modelName = ''
   }
 }
 
