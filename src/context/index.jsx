@@ -1,72 +1,78 @@
-import React, { Component , createContext } from 'react';
-import {API} from '../models'
+import React, { Component, createContext } from "react";
+import { API } from "../models";
 
-export const APIContext = createContext()
+export const APIContext = createContext();
 
 export class APIProvider extends Component {
-  
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
-      ...new API()
-    }
+      ...new API(),
+    };
   }
-  
-  addModel = (name,model) => {
-    const models = new Map()
+
+  addModel = (name, model) => {
+    const models = new Map();
     this.state.models.forEach((value, key) => {
-      models.set(key,value)
-    })
+      models.set(key, value);
+    });
     if (this.state.models.has(name)) {
       return {
         code: -1,
-        error: 'Model already exists'
-      }
+        error: "Model already exists",
+      };
     } else {
-      models.set(name,model)
+      models.set(name, model);
     }
-    this.setState({models})
-  }
+    this.setState({ models });
+  };
 
-  removeModel = (name) => {
-    let models = this.state.models
-    if (name in models) {
-      models = new Map(models)
-      models.delete(name)
-      this.setState({models})
-    } 
-  }
+  removeModel = (e) => {
+    const name = e.target.name;
+    let models = this.state.models;
+    if (models.has(name)) {
+      models = new Map(models);
+      models.delete(name);
+      this.setState({ models });
+    }
+  };
 
   editModel = (name, model) => {
-    const models = new Map(this.state.models)
+    const models = new Map(this.state.models);
     if (name in models) {
-      models[name] = model
-      this.setState({models})
+      models[name] = model;
+      this.setState({ models });
     }
-  }
+  };
 
   removeAllModels = () => {
-    const models = new Map()
-    this.setState({models})
-  }
-  
+    const models = new Map();
+    this.setState({ models });
+  };
+
   changeName = (e) => {
-    this.setState({name:e.target.value})
-  }
+    this.setState({ name: e.target.value });
+  };
 
   render() {
-    const { props } = this
-    const apiState = this.state
-    const { addModel, removeModel, editModel, removeAllModels, changeName } = this
+    const { props } = this;
+    const apiState = this.state;
+    const {
+      addModel,
+      removeModel,
+      editModel,
+      removeAllModels,
+      changeName,
+    } = this;
     const contextPassValue = {
       apiState,
       addModel,
       removeModel,
       removeAllModels,
       editModel,
-      changeName
-    }
+      changeName,
+    };
     return (
       <APIContext.Provider value={contextPassValue}>
         {props.children}
