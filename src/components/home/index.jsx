@@ -1,26 +1,26 @@
-import React, { Component } from 'react';
-import { Button , TextInput , Card } from 'react-materialize'
-import {Link} from 'react-router-dom'
-import {APIContext} from '../../context'
+import React, { Component } from "react";
+import { Button, TextInput, Card } from "react-materialize";
+import { Link } from "react-router-dom";
+import { APIContext } from "../../context";
 
 class index extends Component {
-
-  
   render() {
-    const {apiState,changeName} = this.context
+    const { apiState, changeName } = this.context;
     return (
-        <>
-          <TextInput value={apiState.name} onChange={ changeName} label="Project Name"/>
-          <Link to='/models'>
-            <Button>
-              Add a Model
-            </Button>
-          </Link>
-        </>
+      <>
+        <TextInput
+          value={apiState.name}
+          onChange={changeName}
+          label="Project Name"
+        />
+        <Link to="/models">
+          <Button>Models</Button>
+        </Link>
+      </>
     );
   }
 }
 
-index.contextType = APIContext
+index.contextType = APIContext;
 
 export default index;

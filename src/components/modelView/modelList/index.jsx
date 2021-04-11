@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { APIContext } from "../../../context";
 import { Card, Button } from "react-materialize";
+import { Link } from "react-router-dom";
 
 class index extends Component {
   render() {
@@ -18,13 +19,15 @@ class index extends Component {
         {Array.from(models.keys()).map((key) => {
           return (
             <Card
+              key={key}
               actions={[
-                <Button style={{ marginRight: "5px" }}>Edit Model</Button>,
+                <Link to={`model/${key}`}>
+                  <Button style={{ marginRight: "5px" }}>Edit Model</Button>
+                </Link>,
                 <Button onClick={removeModel} name={key}>
                   Remove Model
                 </Button>,
               ]}
-              key={key}
             >
               <h4>{key}</h4>
             </Card>

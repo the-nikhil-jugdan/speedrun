@@ -1,26 +1,20 @@
 import React, { Component } from "react";
 import { Button, Row, Col } from "react-materialize";
 import { APIContext } from "../../context";
-import AddModel from "./addModel";
 import ModelList from "./modelList";
-
+import { Link } from "react-router-dom";
 class index extends Component {
   render() {
     return (
       <div>
-        <AddModel />
         <Row>
           <Col m={10}>
             <h6>Models</h6>
           </Col>
           <Col>
-            <Button
-              onClick={() => {
-                document.getElementById("addModalButton").click();
-              }}
-            >
-              Add Model
-            </Button>
+            <Link to="/model/0">
+              <Button>Add Model</Button>
+            </Link>
           </Col>
         </Row>
 
