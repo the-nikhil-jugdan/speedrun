@@ -1,12 +1,18 @@
 import React, { Component } from "react";
 import { Button, TextInput } from "react-materialize";
 import { APIContext } from "../../context";
-import { Model } from "../../models";
-
+import { Field, Model } from "../../models";
+import FieldForm from "../fieldForm";
 class index extends Component {
   render() {
-    const { tableName, modelName } = this.state;
-    const { addModelToAPI, changeTableName, changeModelName } = this;
+    const { tableName, modelName, fields } = this.state;
+    const {
+      addModelToAPI,
+      changeTableName,
+      changeModelName,
+      addFieldToModel,
+      addFieldForm,
+    } = this;
     return (
       <div>
         <div
@@ -39,6 +45,24 @@ class index extends Component {
           </div>
           <Button onClick={addModelToAPI}>Save</Button>
         </div>
+
+        <Button onClick={addFieldForm}>Add Field</Button>
+
+        {Array.from(fields.keys()).map((key) => {
+          return (
+            <div
+              style={{
+                border: "1px solid #D8D8D8",
+                marginTop: "20px",
+                paddingTop: "10px",
+                paddingBottom: "10px",
+                borderRadius: "10px",
+              }}
+            >
+              <FieldForm addFieldToModel={addFieldToModel} field_name={key} />
+            </div>
+          );
+        })}
       </div>
     );
   }
@@ -51,12 +75,14 @@ class index extends Component {
       this.state = {
         modelName: "",
         tableName: "",
+        fields: new Map(),
       };
     } else {
-      const movie = context.apiState.models.get(model_name);
+      const model = context.apiState.models.get(model_name);
       this.state = {
-        modelName: movie.modelName,
-        tableName: movie.tableName,
+        modelName: model.modelName,
+        tableName: model.tableName,
+        fields: model.fields,
       };
     }
   }
@@ -66,6 +92,16 @@ class index extends Component {
       modelName: "",
       tableName: "",
     });
+  };
+
+  addFieldForm = () => {
+    const field = new Field();
+    const fields = new Map();
+    fields.set("temp", field);
+    this.state.fields.forEach((value, key) => {
+      fields.set(key, value);
+    });
+    this.setState({ fields });
   };
 
   addModelToAPI = () => {
@@ -82,6 +118,21 @@ class index extends Component {
     }
     this.clear();
     this.props.history.push("/models");
+  };
+
+  addFieldToModel = (name, field) => {
+    const fields = new Map();
+    this.state.fields.forEach((value, key) => {
+      fields.set(key, value);
+    });
+    if (this.state.fields.has(name)) {
+      fields.delete(name);
+      fields.set(field.fieldName, field);
+      this.setState({ fields });
+    } else {
+      fields.set(field.fieldName, field);
+      this.setState({ fields });
+    }
   };
 
   changeTableName = (e) => {
