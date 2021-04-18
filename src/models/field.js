@@ -1,12 +1,12 @@
 class Field {
   constructor() {
-    this.type = ''
-    this.defaultValue = ''
-    this.allowNull = false
-    this.references = null
-    this.fieldName = ''
-    this.unique = null
+    this.type = "";
+    this.defaultValue = "";
+    this.allowNull = false;
+    this.references = null;
+    this.fieldName = "";
+    this.unique = false;
   }
 }
 
-export default Field
+export default Field;

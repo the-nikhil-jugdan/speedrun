@@ -6,8 +6,18 @@ import { sequelize_db_types } from "./util";
 
 class index extends Component {
   render() {
-    const { type, fieldName, defaultValue, allowNull, unique } = this.state;
+    const {
+      type,
+      fieldName,
+      defaultValue,
+      allowNull,
+      unique,
+      refernceModel,
+      referenceKey,
+      deferable,
+    } = this.state;
     const { modifyFormElement, addField, changeType } = this;
+    const { models } = this.context.apiState;
     return (
       <div>
         <div
@@ -77,6 +87,101 @@ class index extends Component {
             marginRight: "5%",
           }}
         >
+          <div
+            style={{
+              display: "flex",
+              flex: "1",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              marginRight: "2%",
+            }}
+          >
+            <p
+              style={{
+                marginLeft: "2%",
+                marginRight: "4%",
+              }}
+            >
+              Refers
+            </p>
+            <div
+              style={{
+                marginRight: "4%",
+              }}
+            >
+              <Select
+                label="Reference Model"
+                multiple={false}
+                value={refernceModel}
+                onChange={(e) => {
+                  this.setState({
+                    refernceModel: e.target.value,
+                  });
+                }}
+              >
+                <option key="empty" value="">
+                  Select a Model
+                </option>
+                {Array.from(models.keys()).map((key) => {
+                  return (
+                    <option key={key} value={key}>
+                      {models.get(key).modelName}
+                    </option>
+                  );
+                })}
+              </Select>
+            </div>
+            {refernceModel != "" ? (
+              <div
+                style={{
+                  marginRight: "4%",
+                }}
+              >
+                <Select
+                  multiple={false}
+                  label="Key"
+                  value={referenceKey}
+                  onChange={(e) => {
+                    this.setState({
+                      referenceKey: e.target.value,
+                    });
+                  }}
+                >
+                  <option key={"empty"} value="">
+                    Select a key
+                  </option>
+                  {Array.from(models.get(refernceModel).fields.keys()).map(
+                    (key) => {
+                      return (
+                        <option key={key} value={key}>
+                          {models.get(refernceModel).fields.get(key).fieldName}
+                        </option>
+                      );
+                    }
+                  )}
+                </Select>
+              </div>
+            ) : (
+              ""
+            )}
+
+            {refernceModel != "" ? (
+              <div>
+                <Checkbox
+                  filledIn
+                  name="isDeffered"
+                  label="Defferable"
+                  checked={deferable}
+                  onChange={(e) => {
+                    this.setState({ deferable: !this.state.deferable });
+                  }}
+                  id={fieldName + "deferable"}
+                />
+              </div>
+            ) : (
+              ""
+            )}
+          </div>
           <Button onClick={addField}>Save</Button>
         </div>
       </div>
@@ -93,6 +198,9 @@ class index extends Component {
         allowNull: false,
         fieldName: "",
         unique: false,
+        refernceModel: "",
+        referenceKey: "",
+        deferable: false,
       };
     else {
       const { field } = props;
@@ -102,6 +210,9 @@ class index extends Component {
         allowNull: field.allowNull,
         fieldName: field.fieldName,
         unique: field.unique,
+        refernceModel: "",
+        referenceKey: "",
+        deferable: false,
       };
     }
   }
@@ -135,6 +246,7 @@ class index extends Component {
     field.defaultValue = this.state.defaultValue;
     field.allowNull = this.state.allowNull;
     field.fieldName = this.state.fieldName;
+    field.unique = this.state.unique;
     addFieldToModel(field.fieldName, field);
     this.clear();
   };

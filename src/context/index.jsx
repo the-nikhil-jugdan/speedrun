@@ -6,7 +6,6 @@ export const APIContext = createContext();
 export class APIProvider extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       ...new API(),
     };
