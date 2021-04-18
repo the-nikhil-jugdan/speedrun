@@ -1,6 +1,5 @@
-import { computeHeadingLevel } from "@testing-library/dom";
 import React, { Component } from "react";
-import { Button, TextInput } from "react-materialize";
+import { Button, TextInput, Select } from "react-materialize";
 import { APIContext } from "../../context";
 import { Field, Model } from "../../models";
 import FieldForm from "../fieldForm";
@@ -48,6 +47,7 @@ class index extends Component {
               value={tableName}
             />
           </div>
+
           <Button onClick={addModelToAPI}>Save</Button>
         </div>
 

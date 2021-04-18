@@ -1,5 +1,5 @@
 import React, { Component, createContext } from "react";
-import { API } from "../models";
+import { API, Model } from "../models";
 
 export const APIContext = createContext();
 
@@ -37,6 +37,16 @@ export class APIProvider extends Component {
     }
   };
 
+  setPrimaryKey = (model, fieldName) => {
+    let models = this.state.models;
+    if (models.has(model.modelName)) {
+      models = new Map(models);
+      model.primaryKey = fieldName;
+      models.set(model.modelName, model);
+      this.setState({ models });
+    }
+  };
+
   editModel = (name, model) => {
     const models = new Map();
     this.state.models.forEach((value, key) => {
@@ -67,6 +77,7 @@ export class APIProvider extends Component {
       editModel,
       removeAllModels,
       changeName,
+      setPrimaryKey,
     } = this;
     const contextPassValue = {
       apiState,
@@ -75,6 +86,7 @@ export class APIProvider extends Component {
       removeAllModels,
       editModel,
       changeName,
+      setPrimaryKey,
     };
     return (
       <APIContext.Provider value={contextPassValue}>

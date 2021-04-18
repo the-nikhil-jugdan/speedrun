@@ -1,9 +1,10 @@
-class Model{
+class Model {
   constructor() {
-    this.fields = new Map()
-    this.tableName = ''
-    this.modelName = ''
+    this.fields = new Map();
+    this.tableName = "";
+    this.modelName = "";
+    this.primaryKey = "";
   }
 }
 
-export default Model
+export default Model;

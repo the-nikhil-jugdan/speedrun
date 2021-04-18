@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, TextInput, Card } from "react-materialize";
+import { Button, TextInput } from "react-materialize";
 import { Link } from "react-router-dom";
 import { APIContext } from "../../context";
 
