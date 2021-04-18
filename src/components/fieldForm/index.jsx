@@ -5,62 +5,8 @@ import { APIContext } from "../../context";
 import { sequelize_db_types } from "./util";
 
 class index extends Component {
-  constructor(props) {
-    super(props);
-    const { field_name } = props;
-    if (field_name === "temp")
-      this.state = {
-        type: "DataTypes.STRING",
-        defaultValue: "",
-        allowNull: false,
-        fieldName: "",
-      };
-    else {
-      const { field } = props;
-      this.state = {
-        type: field.type,
-        defaultValue: field.defaultValue,
-        allowNull: field.allowNull,
-        fieldName: field.fieldName,
-      };
-    }
-  }
-
-  clear = () => {
-    this.setState({
-      type: "DataTypes.STRING",
-      defaultValue: "",
-      allowNull: false,
-      fieldName: "",
-    });
-  };
-
-  changeType = (e) => {
-    this.setState({
-      type: e.target.value,
-    });
-  };
-
-  modifyFormElement = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  addField = () => {
-    const { addFieldToModel, addFieldForm } = this.props;
-    const field = new Field();
-    field.type = this.state.type;
-    field.defaultValue = this.state.defaultValue;
-    field.allowNull = this.state.allowNull;
-    field.fieldName = this.state.fieldName;
-    addFieldToModel(field.fieldName, field);
-    addFieldForm();
-    this.clear();
-  };
-
   render() {
-    const { type, fieldName, defaultValue, allowNull } = this.state;
+    const { type, fieldName, defaultValue, allowNull, unique } = this.state;
     const { modifyFormElement, addField, changeType } = this;
     return (
       <div>
@@ -113,6 +59,16 @@ class index extends Component {
             }}
             id={fieldName + "chkbx"}
           />
+          <Checkbox
+            filledIn
+            name="unique"
+            label="Unique"
+            checked={unique}
+            onChange={(e) => {
+              this.setState({ unique: !this.state.unique });
+            }}
+            id={fieldName + "uqchkbx"}
+          />
         </div>
         <div
           style={{
@@ -126,6 +82,62 @@ class index extends Component {
       </div>
     );
   }
+
+  constructor(props) {
+    super(props);
+    const { field_name } = props;
+    if (field_name === "temp")
+      this.state = {
+        type: "DataTypes.STRING",
+        defaultValue: "",
+        allowNull: false,
+        fieldName: "",
+        unique: false,
+      };
+    else {
+      const { field } = props;
+      this.state = {
+        type: field.type,
+        defaultValue: field.defaultValue,
+        allowNull: field.allowNull,
+        fieldName: field.fieldName,
+        unique: field.unique,
+      };
+    }
+  }
+
+  clear = () => {
+    this.setState({
+      type: "DataTypes.STRING",
+      defaultValue: "",
+      allowNull: false,
+      fieldName: "",
+      unique: false,
+    });
+  };
+
+  changeType = (e) => {
+    this.setState({
+      type: e.target.value,
+    });
+  };
+
+  modifyFormElement = (e) => {
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  addField = () => {
+    const { addFieldToModel, addFieldForm } = this.props;
+    const field = new Field();
+    field.type = this.state.type;
+    field.defaultValue = this.state.defaultValue;
+    field.allowNull = this.state.allowNull;
+    field.fieldName = this.state.fieldName;
+    addFieldToModel(field.fieldName, field);
+    this.clear();
+  };
 }
 
 index.contextType = APIContext;

@@ -1,3 +1,4 @@
+import { computeHeadingLevel } from "@testing-library/dom";
 import React, { Component } from "react";
 import { Button, TextInput } from "react-materialize";
 import { APIContext } from "../../context";
@@ -5,6 +6,7 @@ import { Field, Model } from "../../models";
 import FieldForm from "../fieldForm";
 class index extends Component {
   render() {
+    const field_elems = [];
     const { tableName, modelName, fields } = this.state;
     const {
       addModelToAPI,
@@ -13,6 +15,10 @@ class index extends Component {
       addFieldToModel,
       addFieldForm,
     } = this;
+    fields.forEach((value, key) => {
+      field_elems.push(value);
+    });
+    console.log(this.state);
     return (
       <div>
         <div
@@ -48,7 +54,7 @@ class index extends Component {
 
         <Button onClick={addFieldForm}>Add Field</Button>
 
-        {Array.from(fields.keys()).map((key) => {
+        {field_elems.map((field) => {
           return (
             <div
               style={{
@@ -61,9 +67,9 @@ class index extends Component {
             >
               <FieldForm
                 addFieldToModel={addFieldToModel}
-                field_name={key}
+                field_name={field.field_name}
                 addFieldForm={addFieldForm}
-                field={fields.get(key)}
+                field={field}
               />
             </div>
           );
@@ -113,6 +119,18 @@ class index extends Component {
     this.setState({ fields });
   };
 
+  addFieldToModel = (name, field) => {
+    this.setState((state) => {
+      const fields = new Map(state.fields).set(name, field);
+      fields.delete("temp");
+      const newState = {
+        ...state,
+        fields,
+      };
+      return newState;
+    });
+  };
+
   addModelToAPI = () => {
     const { addModel, editModel } = this.context;
     const model = new Model();
@@ -128,18 +146,6 @@ class index extends Component {
     }
     this.clear();
     this.props.history.push("/models");
-  };
-
-  addFieldToModel = (name, field) => {
-    this.setState((state) => {
-      const fields = new Map(state.fields).set(name, field);
-      fields.delete("temp");
-      const newState = {
-        ...state,
-        fields,
-      };
-      return newState;
-    });
   };
 
   changeTableName = (e) => {
