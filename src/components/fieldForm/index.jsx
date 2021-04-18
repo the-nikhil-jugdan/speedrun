@@ -1,9 +1,8 @@
-import { Field } from "../../models";
+import { Field, Reference } from "../../models";
 import React, { Component } from "react";
 import { Select, TextInput, Checkbox, Button } from "react-materialize";
 import { APIContext } from "../../context";
 import { sequelize_db_types } from "./util";
-
 class index extends Component {
   render() {
     const {
@@ -131,7 +130,7 @@ class index extends Component {
                 })}
               </Select>
             </div>
-            {refernceModel != "" ? (
+            {refernceModel !== "" ? (
               <div
                 style={{
                   marginRight: "4%",
@@ -165,7 +164,7 @@ class index extends Component {
               ""
             )}
 
-            {refernceModel != "" ? (
+            {refernceModel !== "" ? (
               <div>
                 <Checkbox
                   filledIn
@@ -210,9 +209,10 @@ class index extends Component {
         allowNull: field.allowNull,
         fieldName: field.fieldName,
         unique: field.unique,
-        refernceModel: "",
-        referenceKey: "",
-        deferable: false,
+        refernceModel: field.references !== null ? field.references.model : "",
+        referenceKey: field.references !== null ? field.references.key : "",
+        deferable:
+          field.references !== null ? field.references.defferable : false,
       };
     }
   }
@@ -240,13 +240,20 @@ class index extends Component {
   };
 
   addField = () => {
-    const { addFieldToModel, addFieldForm } = this.props;
+    const { addFieldToModel } = this.props;
     const field = new Field();
     field.type = this.state.type;
     field.defaultValue = this.state.defaultValue;
     field.allowNull = this.state.allowNull;
     field.fieldName = this.state.fieldName;
     field.unique = this.state.unique;
+    if (this.state.refernceModel !== "") {
+      const reference = new Reference();
+      reference.model = this.state.refernceModel;
+      reference.key = this.state.referenceKey;
+      reference.defferable = this.state.defferable;
+      field.references = reference;
+    }
     addFieldToModel(field.fieldName, field);
     this.clear();
   };

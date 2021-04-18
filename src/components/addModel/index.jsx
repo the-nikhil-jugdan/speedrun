@@ -18,7 +18,6 @@ class index extends Component {
     fields.forEach((value, key) => {
       field_elems.push(value);
     });
-    console.log(this.state);
     return (
       <div>
         <div
