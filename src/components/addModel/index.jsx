@@ -59,7 +59,12 @@ class index extends Component {
                 borderRadius: "10px",
               }}
             >
-              <FieldForm addFieldToModel={addFieldToModel} field_name={key} />
+              <FieldForm
+                addFieldToModel={addFieldToModel}
+                field_name={key}
+                addFieldForm={addFieldForm}
+                field={fields.get(key)}
+              />
             </div>
           );
         })}
@@ -79,10 +84,14 @@ class index extends Component {
       };
     } else {
       const model = context.apiState.models.get(model_name);
+      const fields = new Map();
+      model.fields.forEach((value, key) => {
+        fields.set(key, value);
+      });
       this.state = {
-        modelName: model.modelName,
-        tableName: model.tableName,
-        fields: model.fields,
+        modelName: (" " + model.modelName).slice(1),
+        tableName: (" " + model.tableName).slice(1),
+        fields: fields,
       };
     }
   }
@@ -111,28 +120,26 @@ class index extends Component {
     const model_name = match.params.name;
     model.modelName = this.state.modelName;
     model.tableName = this.state.tableName;
+    model.fields = this.state.fields;
     if (model_name === "0") {
-      addModel(this.state.modelName, model);
+      addModel(model.modelName, model);
     } else {
-      editModel(model_name, model);
+      editModel(model.modelName, model);
     }
     this.clear();
     this.props.history.push("/models");
   };
 
   addFieldToModel = (name, field) => {
-    const fields = new Map();
-    this.state.fields.forEach((value, key) => {
-      fields.set(key, value);
+    this.setState((state) => {
+      const fields = new Map(state.fields).set(name, field);
+      fields.delete("temp");
+      const newState = {
+        ...state,
+        fields,
+      };
+      return newState;
     });
-    if (this.state.fields.has(name)) {
-      fields.delete(name);
-      fields.set(field.fieldName, field);
-      this.setState({ fields });
-    } else {
-      fields.set(field.fieldName, field);
-      this.setState({ fields });
-    }
   };
 
   changeTableName = (e) => {

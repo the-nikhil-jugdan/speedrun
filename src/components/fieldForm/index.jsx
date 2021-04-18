@@ -7,13 +7,33 @@ import { sequelize_db_types } from "./util";
 class index extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      type: "",
+    const { field_name } = props;
+    if (field_name === "temp")
+      this.state = {
+        type: "DataTypes.STRING",
+        defaultValue: "",
+        allowNull: false,
+        fieldName: "",
+      };
+    else {
+      const { field } = props;
+      this.state = {
+        type: field.type,
+        defaultValue: field.defaultValue,
+        allowNull: field.allowNull,
+        fieldName: field.fieldName,
+      };
+    }
+  }
+
+  clear = () => {
+    this.setState({
+      type: "DataTypes.STRING",
       defaultValue: "",
       allowNull: false,
       fieldName: "",
-    };
-  }
+    });
+  };
 
   changeType = (e) => {
     this.setState({
@@ -28,14 +48,20 @@ class index extends Component {
   };
 
   addField = () => {
-    const { addFieldToModel, field_name } = this.props;
+    const { addFieldToModel, addFieldForm } = this.props;
     const field = new Field();
-    addFieldToModel(field_name, field);
+    field.type = this.state.type;
+    field.defaultValue = this.state.defaultValue;
+    field.allowNull = this.state.allowNull;
+    field.fieldName = this.state.fieldName;
+    addFieldToModel(field.fieldName, field);
+    addFieldForm();
+    this.clear();
   };
 
   render() {
     const { type, fieldName, defaultValue, allowNull } = this.state;
-    const { modifyFormElement, addField } = this;
+    const { modifyFormElement, addField, changeType } = this;
     return (
       <div>
         <div
@@ -50,9 +76,16 @@ class index extends Component {
             defaultValue={fieldName}
             label="Field Name"
             onChange={modifyFormElement}
+            id={fieldName + "tctBox"}
           />
 
-          <Select label="Data Type" multiple={false} value={type}>
+          <Select
+            label="Data Type"
+            multiple={false}
+            value={type}
+            id={fieldName + "select"}
+            onChange={changeType}
+          >
             {Array.from(sequelize_db_types.keys()).map((key) => {
               return (
                 <option key={key} value={key}>
@@ -67,14 +100,18 @@ class index extends Component {
             defaultValue={defaultValue}
             label="Default Value"
             onChange={modifyFormElement}
+            id={fieldName + "defaultValue"}
           />
 
           <Checkbox
             filledIn
             name="allowNull"
             label="Allow Null"
-            value={allowNull}
-            onChange={modifyFormElement}
+            checked={allowNull}
+            onChange={(e) => {
+              this.setState({ allowNull: !this.state.allowNull });
+            }}
+            id={fieldName + "chkbx"}
           />
         </div>
         <div
