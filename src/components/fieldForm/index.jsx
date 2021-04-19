@@ -28,10 +28,9 @@ class index extends Component {
         >
           <TextInput
             name="fieldName"
-            defaultValue={fieldName}
+            value={fieldName}
             label="Field Name"
             onChange={modifyFormElement}
-            id={fieldName + "tctBox"}
           />
 
           <Select
@@ -66,7 +65,6 @@ class index extends Component {
             onChange={(e) => {
               this.setState({ allowNull: !this.state.allowNull });
             }}
-            id={fieldName + "chkbx"}
           />
           <Checkbox
             filledIn
@@ -76,7 +74,6 @@ class index extends Component {
             onChange={(e) => {
               this.setState({ unique: !this.state.unique });
             }}
-            id={fieldName + "uqchkbx"}
           />
         </div>
         <div
@@ -190,7 +187,7 @@ class index extends Component {
   constructor(props) {
     super(props);
     const { field_name } = props;
-    if (field_name === "temp")
+    if (field_name === "temp") {
       this.state = {
         type: "DataTypes.STRING",
         defaultValue: "",
@@ -201,13 +198,13 @@ class index extends Component {
         referenceKey: "",
         deferable: false,
       };
-    else {
+    } else {
       const { field } = props;
       this.state = {
         type: field.type,
         defaultValue: field.defaultValue,
         allowNull: field.allowNull,
-        fieldName: field.fieldName,
+        fieldName: field_name,
         unique: field.unique,
         refernceModel: field.references !== null ? field.references.model : "",
         referenceKey: field.references !== null ? field.references.key : "",
@@ -216,16 +213,6 @@ class index extends Component {
       };
     }
   }
-
-  clear = () => {
-    this.setState({
-      type: "DataTypes.STRING",
-      defaultValue: "",
-      allowNull: false,
-      fieldName: "",
-      unique: false,
-    });
-  };
 
   changeType = (e) => {
     this.setState({
@@ -255,7 +242,6 @@ class index extends Component {
       field.references = reference;
     }
     addFieldToModel(field.fieldName, field);
-    this.clear();
   };
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, TextInput, Select } from "react-materialize";
+import { Button, TextInput } from "react-materialize";
 import { APIContext } from "../../context";
 import { Field, Model } from "../../models";
 import FieldForm from "../fieldForm";
@@ -15,7 +15,7 @@ class index extends Component {
       addFieldForm,
     } = this;
     fields.forEach((value, key) => {
-      field_elems.push(value);
+      field_elems.push(key);
     });
     return (
       <div>
@@ -54,6 +54,7 @@ class index extends Component {
         <Button onClick={addFieldForm}>Add Field</Button>
 
         {field_elems.map((field) => {
+          console.log(field);
           return (
             <div
               style={{
@@ -63,12 +64,13 @@ class index extends Component {
                 paddingBottom: "10px",
                 borderRadius: "10px",
               }}
+              key={field}
             >
               <FieldForm
                 addFieldToModel={addFieldToModel}
-                field_name={field.field_name}
+                field_name={field}
                 addFieldForm={addFieldForm}
-                field={field}
+                field={fields.get(field)}
               />
             </div>
           );
@@ -138,6 +140,7 @@ class index extends Component {
     model.modelName = this.state.modelName;
     model.tableName = this.state.tableName;
     model.fields = this.state.fields;
+    model.fields.delete("temp");
     if (model_name === "0") {
       addModel(model.modelName, model);
     } else {
