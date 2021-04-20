@@ -15,7 +15,7 @@ class index extends Component {
   }
 
   render() {
-    const { dialects } = this;
+    const { dialects, sendForGeneration } = this;
     const { apiState, changeName, changeDBFields } = this.context;
     const { username, password, database, host, dialect } = apiState;
     return (
@@ -37,22 +37,35 @@ class index extends Component {
         >
           <TextInput
             label="Username"
-            value={username}
+            name="username"
+            defaultValue={username}
             onChange={changeDBFields}
           />
           <TextInput
+            name="password"
             label="Password"
-            value={password}
+            defaultValue={password}
             onChange={changeDBFields}
           />
           <TextInput
             label="Database"
-            value={database}
+            defaultValue={database}
+            name="database"
             onChange={changeDBFields}
           />
-          <TextInput label="Host" value={host} onChange={changeDBFields} />
+          <TextInput
+            name="host"
+            label="Host"
+            defaultValue={host}
+            onChange={changeDBFields}
+          />
 
-          <Select label="Database" value={dialect} onChange={changeDBFields}>
+          <Select
+            name="dialect"
+            label="Database"
+            defaultValue={dialect}
+            onChange={changeDBFields}
+          >
             <option key="empty" value="">
               Select a DB
             </option>
@@ -65,10 +78,40 @@ class index extends Component {
             })}
           </Select>
         </div>
-        <Button>Generate API</Button>
+        <Button onClick={sendForGeneration}>Generate API</Button>
       </>
     );
   }
+  sendForGeneration = () => {
+    const { apiState } = this.context;
+    console.log(apiState);
+    const sendingData = { ...apiState };
+    const models = {};
+    apiState.models.forEach((value, key) => {
+      const model = { ...value };
+      const fields = {};
+      model.fields.forEach((field, fname) => {
+        fields[fname] = { ...field };
+      });
+      console.log(fields);
+      model.fields = fields;
+      models[key] = model;
+      console.log(models);
+    });
+    sendingData.models = models;
+    const data = JSON.stringify(sendingData);
+    try {
+      fetch("http://localhost:3003", {
+        method: "POST",
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 }
 
 index.contextType = APIContext;

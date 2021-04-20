@@ -16,5 +16,9 @@ app.get("/", (req, res, next) => {
   res.send("SERVER RUNNING SUCCESSFULLY");
 });
 
+app.post("/", (req, res, next) => {
+  console.log(req.body);
+});
+
 const PORT = 3003;
 app.listen(PORT);

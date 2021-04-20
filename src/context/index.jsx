@@ -69,6 +69,8 @@ export class APIProvider extends Component {
   };
 
   changeDBFields = (e) => {
+    console.log(e.target.name);
+    console.log(e.target.value);
     this.setState({ [e.target.name]: e.target.value });
   };
 
@@ -82,6 +84,7 @@ export class APIProvider extends Component {
       removeAllModels,
       changeName,
       setPrimaryKey,
+      changeDBFields,
     } = this;
     const contextPassValue = {
       apiState,
@@ -91,6 +94,7 @@ export class APIProvider extends Component {
       editModel,
       changeName,
       setPrimaryKey,
+      changeDBFields,
     };
     return (
       <APIContext.Provider value={contextPassValue}>
