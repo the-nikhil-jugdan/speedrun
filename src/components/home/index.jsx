@@ -65,6 +65,7 @@ class index extends Component {
             })}
           </Select>
         </div>
+        <Button>Generate API</Button>
       </>
     );
   }
