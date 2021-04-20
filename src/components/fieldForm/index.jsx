@@ -161,7 +161,7 @@ class index extends Component {
               ""
             )}
 
-            {refernceModel !== "" ? (
+            {/* {refernceModel !== "" ? (
               <div>
                 <Checkbox
                   filledIn
@@ -176,7 +176,7 @@ class index extends Component {
               </div>
             ) : (
               ""
-            )}
+            )} */}
           </div>
           <Button onClick={addField}>Save</Button>
         </div>
