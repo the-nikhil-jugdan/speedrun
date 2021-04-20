@@ -68,6 +68,10 @@ export class APIProvider extends Component {
     this.setState({ name: e.target.value });
   };
 
+  changeDBFields = (e) => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+
   render() {
     const { props } = this;
     const apiState = this.state;
