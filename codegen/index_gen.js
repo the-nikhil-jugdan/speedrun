@@ -31,7 +31,7 @@ const index_gen = (gen_dir, apiObj) => {
 
   for (const model in apiObj.models) {
     const m_name = camelToSnakeCase(model);
-    gen_str += `app.use(require("./src/routes/${m_name}")("/api/${m_name}", db))\n`;
+    gen_str += `app.use("/api/${m_name}", require("./src/routes/${m_name}")(db));\n`;
   }
 
   gen_str += `

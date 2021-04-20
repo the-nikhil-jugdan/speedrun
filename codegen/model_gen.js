@@ -110,7 +110,7 @@ module.exports = db;
 `;
 
 const model_gen = (gen_dir, apiObj) => {
-  const model_dir = gen_dir + "models/";
+  const model_dir = gen_dir + "src/models/";
   fs.mkdirSync(model_dir);
 
   fs.writeFileSync(model_dir + "index.js", index, (err) => {

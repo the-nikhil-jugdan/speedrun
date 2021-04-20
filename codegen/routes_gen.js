@@ -73,7 +73,7 @@ const camelToSnakeCase = (str) => {
 };
 
 const routes_gen = (gen_dir, apiObj) => {
-  const routes_dir = gen_dir + "routes/";
+  const routes_dir = gen_dir + "src/routes/";
   fs.mkdirSync(routes_dir);
   for (const model in apiObj.models) {
     fs.writeFileSync(
