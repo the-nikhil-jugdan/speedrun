@@ -4,6 +4,7 @@ const fs = require("fs");
 const config_gen = require("./codegen/config_gen");
 const model_gen = require("./codegen/model_gen");
 const routes_gen = require("./codegen/routes_gen");
+const index_gen = require("./codegen/index_gen");
 
 app.use(express.json());
 app.use((req, res, next) => {
@@ -22,7 +23,6 @@ app.get("/", (req, res, next) => {
 
 app.post("/", (req, res, next) => {
   const apiObj = req.body;
-  const models = apiObj.models;
   const gen_dir = "./gen/";
   if (fs.existsSync(gen_dir)) {
     fs.rmdirSync(gen_dir, { recursive: true });
@@ -31,6 +31,7 @@ app.post("/", (req, res, next) => {
   config_gen(gen_dir, apiObj);
   model_gen(gen_dir, apiObj);
   routes_gen(gen_dir, apiObj);
+  index_gen(gen_dir, apiObj);
 });
 
 const PORT = 3003;

@@ -16,7 +16,9 @@ const config_gen = (gen_dir, apiObj) => {
     "dialect": "${dbOptions.dialect}"
   }
 }`;
-  fs.writeFileSync(gen_dir + "config.json", content, (err) => {
+  const config_dir = gen_dir + "config/";
+  fs.mkdirSync(config_dir);
+  fs.writeFileSync(config_dir + "config.json", content, (err) => {
     console.log(err);
   });
 };
