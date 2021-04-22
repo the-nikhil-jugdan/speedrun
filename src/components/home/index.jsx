@@ -28,6 +28,16 @@ class index extends Component {
         <Link to="/models">
           <Button>Models</Button>
         </Link>
+
+        <p
+          style={{
+            marginTop: "10px",
+            marginBottom: "10px",
+          }}
+        >
+          Database Config
+        </p>
+
         <div
           style={{
             display: "grid",

@@ -1,3 +1,4 @@
+const e = require("express");
 const fs = require("fs");
 
 const model_template = (modelName, model_rep) => {
@@ -134,36 +135,47 @@ const model_gen = (gen_dir, apiObj) => {
 
       if (fieldObj.references !== null) {
         field_rep.references = { ...fieldObj.references };
-      }
-
-      if (fieldObj.defaultValue !== "") {
-        field_rep.defaultValue = fieldObj.defaultValue;
-      }
-
-      if (fieldObj.unique === true) {
-        field_rep.unique = true;
-      }
-
-      if (fieldObj.allowNull === true) {
-        field_rep.allowNull = true;
-      }
-
-      if (fieldObj.fieldName === modelObj.primaryKey) {
-        field_rep.primaryKey = true;
-        if (field_rep.type === "DataTypes.INTEGER") {
-          field_rep.autoIncrement = true;
+        if (field_rep.references.key === "") {
+          let key_field = "";
+          if (
+            apiObj.models[field_rep.references["model"]]["primaryKey"] !== ""
+          ) {
+            key_field =
+              apiObj.models[field_rep.references["model"]]["primaryKey"];
+          } else {
+            key_field = "id";
+          }
+          field_rep.references.key = key_field;
         }
+
+        if (fieldObj.defaultValue !== "") {
+          field_rep.defaultValue = fieldObj.defaultValue;
+        }
+
+        if (fieldObj.unique === true) {
+          field_rep.unique = true;
+        }
+
+        if (fieldObj.allowNull === true) {
+          field_rep.allowNull = true;
+        }
+
+        if (fieldObj.fieldName === modelObj.primaryKey) {
+          field_rep.primaryKey = true;
+          if (field_rep.type === "DataTypes.INTEGER") {
+            field_rep.autoIncrement = true;
+          }
+        }
+        model_rep[field] = field_rep;
       }
-      model_rep[field] = field_rep;
+      fs.writeFileSync(
+        model_dir + `${camelToSnakeCase(model)}.js`,
+        model_template(model, model_rep),
+        (err) => {
+          console.log(`Error in creating Model ${model}`);
+        }
+      );
     }
-    fs.writeFileSync(
-      model_dir + `${camelToSnakeCase(model)}.js`,
-      model_template(model, model_rep),
-      (err) => {
-        console.log(`Error in creating Model ${model}`);
-      }
-    );
   }
 };
-
 module.exports = model_gen;

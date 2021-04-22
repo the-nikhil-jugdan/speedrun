@@ -18,7 +18,7 @@ module.exports = (db) => {
 
   router.get("/:pk", async (req, res) => {
     try {
-      const obj = await db.${modelName}.findByPK(req.params.pk);
+      const obj = await db.${modelName}.findByPk(req.params.pk);
       if (obj === null) {
         res.status(404).send();
       } else res.status(200).send(obj);
@@ -30,8 +30,8 @@ module.exports = (db) => {
 
   router.post("", async (req, res) => {
     try {
-      await db.${modelName}.create(req.body);
-      res.status(201);
+      const obj = await db.${modelName}.create(req.body);
+      res.status(201).send(obj);
     } catch (error) {
       console.log(error);
       res.status(500);
@@ -40,12 +40,12 @@ module.exports = (db) => {
 
   router.patch("/:id", async (req, res) => {
     try {
-      const obj = await db.${modelName}.findByPK(req.params.id);
+      const obj = await db.${modelName}.findByPk(req.params.id);
       for (const prop in req.body) {
         obj[prop] = req.body[prop];
       }
       await obj.save();
-      res.status(200).send();
+      res.status(200).send(obj);
     } catch (error) {
       console.log(error);
       res.status(500).send();
@@ -54,7 +54,7 @@ module.exports = (db) => {
 
   router.delete("/:id", async (req, res) => {
     try {
-      const obj = await db.${modelName}.findByPK(req.params.id);
+      const obj = await db.${modelName}.findByPk(req.params.id);
       await obj.destroy();
       res.status(200).send();
     } catch (error) {
