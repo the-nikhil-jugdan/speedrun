@@ -1,14 +1,8 @@
-import React from 'react'
-import { Navbar} from 'react-materialize'
+import React from "react";
+import { Navbar } from "react-materialize";
 
-export default function index ()  {
+export default function index() {
   return (
-    <Navbar
-      brand={
-        <div>Speedrun</div>
-      }
-      menuIcon={null}
-      centerLogo={true}
-    />
-  )
+    <Navbar brand={<div>FAST API</div>} menuIcon={null} centerLogo={true} />
+  );
 }

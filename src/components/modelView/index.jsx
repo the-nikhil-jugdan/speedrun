@@ -12,12 +12,24 @@ class index extends Component {
             <h6>Models</h6>
           </Col>
           <Col>
-            <Link to="/">
-              <Button>Home</Button>
-            </Link>
-            <Link to="/model/0">
-              <Button>Add Model</Button>
-            </Link>
+            <div
+              style={{
+                display: "flex",
+              }}
+            >
+              <Link to="/">
+                <Button>Home</Button>
+              </Link>
+              <div
+                style={{
+                  marginLeft: "10%",
+                }}
+              >
+                <Link to="/model/0">
+                  <Button>Add Model</Button>
+                </Link>
+              </div>
+            </div>
           </Col>
         </Row>
 

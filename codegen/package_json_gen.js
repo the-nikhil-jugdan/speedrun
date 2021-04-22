@@ -6,6 +6,10 @@ const template = (name) => `{
   "dependencies": {
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "mariadb": "^2.5.3",
+    "mssql": "^6.3.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^2.2.5",
     "nodemon": "^2.0.7",
     "pg": "^8.6.0",
     "sequelize": "^6.3.5"
